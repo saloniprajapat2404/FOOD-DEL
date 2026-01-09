@@ -6,7 +6,11 @@ import fs from 'fs'
 
 const addFood = async (req, res) => {
    
-    let image_filename = '$(req.file.filename)' ;
+    if (!req.file) {
+        return res.json({success:false,message:"Image not uploaded"})
+    }
+
+    let image_filename = req.file.filename;
 
     const food = new foodModel({
         name: req.body.name,
@@ -17,6 +21,8 @@ const addFood = async (req, res) => {
         })
     try {
         await food.save();
+        // Small delay to ensure file is fully written to disk before frontend tries to load it
+        await new Promise(resolve => setTimeout(resolve, 100));
         res.json({success:true,message:"Food Added"})
     } catch (error){
          console.log(error);

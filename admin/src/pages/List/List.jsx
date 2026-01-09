@@ -22,10 +22,11 @@ const List = ({url}) => {
     }
   };
   const removeFood = async(foodId) =>{
-const response = await axios.post(`${url}/api/food/remove`, {id:foodId});
+const response = await axios.post(`${url}/api/food/remove`, {_id:foodId});
 await fetchList();
 if(response.data.success){
     toast.success(response.data.message)
+    try{ localStorage.setItem('foodListUpdated', Date.now().toString()); }catch(e){}
 }
 else{
     toast.error("Error");
@@ -34,6 +35,9 @@ else{
 
   useEffect(() => {
     fetchList();
+    // Auto-refresh list every 5 seconds to sync with frontend
+    const interval = setInterval(fetchList, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   return (

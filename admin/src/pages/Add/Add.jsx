@@ -42,6 +42,12 @@ const Add = ({url}) => {
             })
             setImage(false)
             toast.success(response.data.message)
+            // Signal other tabs (frontend) to refetch via localStorage event
+            try {
+                localStorage.setItem('foodListUpdated', Date.now().toString());
+            } catch (e) {
+                // ignore
+            }
         }
         else {
   toast.error(response.data.message);
