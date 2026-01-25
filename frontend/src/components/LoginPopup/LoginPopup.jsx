@@ -13,7 +13,7 @@ const LoginPopup = ({setShowLogin}) => {
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const API = "http://localhost:4000";
+      const API = "https://food-del-backend-48p7.onrender.com";
       try {
         if (currState === 'Sign Up') {
           const resp = await axios.post(`${API}/api/auth/register`, { name, email, password });
