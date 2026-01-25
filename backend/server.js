@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { connectDB } from "./config/db.js"
 import foodRouter from "./routes/foodRoute.js";
 import authRouter from "./routes/authRoute.js";
+import orderRouter from "./routes/orderRoute.js";
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ const startServer = async () => {
     // api endpoints
     app.use("/api/food", foodRouter)
     app.use("/api/auth", authRouter)
+    app.use("/api/order", orderRouter)
     app.use("/images",express.static('uploads'))
 
     app.get("/", (req, res) => {

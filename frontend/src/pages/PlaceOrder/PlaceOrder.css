@@ -26,6 +26,53 @@
     display : flex;
     gap: 10px;
 }
+
+/* Payment Methods Styles */
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+}
+
+.payment-option {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #f9f9f9;
+}
+
+.payment-option:hover {
+    border-color: #ff6347;
+    background: #fff5f5;
+}
+
+.payment-option input[type="radio"] {
+    margin: 0;
+    margin-right: 12px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+.payment-option input[type="radio"]:checked {
+    accent-color: #ff6347;
+}
+
+.payment-option span {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+.payment-option input[type="radio"]:checked + span {
+    color: #ff6347;
+}
 .place-order-right{
     width: 100%;
     max-width: max(40%,500px);

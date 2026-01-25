@@ -9,7 +9,7 @@ const StoreContextProvider = (props) => {
 
     const [food_list, setFoodList] = useState(defaultFoodList);
     const [ cartItems,setCartItems] = useState({});
-    const url = "https://food-del-backend-48p7.onrender.com";
+    const url = import.meta.env.VITE_API_URL;
 
     const fetchFoodList = async () => {
         try {
