@@ -10,13 +10,14 @@ const LoginPopup = ({setShowLogin}) => {
     const [name,setName] = useState("")
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
+    const apiUrl = import.meta.env.VITE_API_URL
+      || (import.meta.env.DEV ? "http://localhost:4000" : "https://food-del-qcum.onrender.com");
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const API = "https://food-del-backend-48p7.onrender.com";
       try {
         if (currState === 'Sign Up') {
-          const resp = await axios.post(`${API}/api/auth/register`, { name, email, password });
+          const resp = await axios.post(`${apiUrl}/api/auth/register`, { name, email, password });
           if (resp.data.success) {
             const { token, user } = resp.data.data;
             localStorage.setItem('token', token);
@@ -26,7 +27,7 @@ const LoginPopup = ({setShowLogin}) => {
             setShowLogin(false);
           }
         } else {
-          const resp = await axios.post(`${API}/api/auth/login`, { email, password });
+          const resp = await axios.post(`${apiUrl}/api/auth/login`, { email, password });
           if (resp.data.success) {
             const { token, user } = resp.data.data;
             localStorage.setItem('token', token);
