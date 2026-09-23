@@ -6,7 +6,7 @@ import foodRouter from "./routes/foodRoute.js";
 import authRouter from "./routes/authRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 
-dotenv.config();
+dotenv.config({ path: new URL('./.env', import.meta.url) });
 
 //app config
 const app = express()
@@ -44,7 +44,7 @@ const startServer = async () => {
     })
 
     app.listen(port, () => {
-        console.log(`Server Started on http://localhost:${port}`)
+        console.log(`Server started on port ${port}`)
     })
 }
 
