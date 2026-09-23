@@ -30,7 +30,8 @@ process.on('unhandledRejection', (reason) => {
 const startServer = async () => {
     const dbOk = await connectDB();
     if (dbOk === false) {
-        console.warn('DB connect failed; server will continue in development mode.');
+        console.error('Server startup aborted because the database is unavailable.');
+        process.exit(1);
     }
     // api endpoints
     app.use("/api/food", foodRouter)

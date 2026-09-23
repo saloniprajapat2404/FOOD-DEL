@@ -1,9 +1,21 @@
 import userModel from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
+
+const ensureDatabase = (res) => {
+    if (mongoose.connection.readyState === 1) return true;
+
+    res.status(503).json({
+        success: false,
+        message: "Authentication service is temporarily unavailable"
+    });
+    return false;
+};
 
 const register = async (req, res) => {
     try {
+        if (!ensureDatabase(res)) return;
         const { name, email, password } = req.body;
         if (!name || !email || !password) return res.status(400).json({ success: false, message: "All fields required" });
 
@@ -18,6 +30,12 @@ const register = async (req, res) => {
         res.json({ success: true, data: { token, user: { name: user.name, email: user.email } } });
     } catch (error) {
         console.error("Auth controller error:", error?.message || error);
+        if (mongoose.connection.readyState !== 1 || error?.message?.includes('buffering timed out')) {
+            return res.status(503).json({
+                success: false,
+                message: "Authentication service is temporarily unavailable"
+            });
+        }
         const message = process.env.NODE_ENV === 'production' ? 'Server error' : (error?.message || 'Server error');
         res.status(500).json({ success: false, message });
     }
@@ -25,6 +43,7 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     try {
+        if (!ensureDatabase(res)) return;
         const { email, password } = req.body;
         if (!email || !password) return res.status(400).json({ success: false, message: "All fields required" });
 
@@ -38,6 +57,12 @@ const login = async (req, res) => {
         res.json({ success: true, data: { token, user: { name: user.name, email: user.email } } });
     } catch (error) {
         console.log(error);
+        if (mongoose.connection.readyState !== 1 || error?.message?.includes('buffering timed out')) {
+            return res.status(503).json({
+                success: false,
+                message: "Authentication service is temporarily unavailable"
+            });
+        }
         res.status(500).json({ success: false, message: "Server error" });
     }
 }
